@@ -16,6 +16,5 @@ public class SpaceStationResponse {
     private String message;
     private Rover rover;
     private List<Obstacle> obstacles;
-    private String spaceView;
     
 }

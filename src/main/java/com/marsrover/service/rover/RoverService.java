@@ -4,6 +4,7 @@ import com.marsrover.model.enums.DirectionEnum;
 import com.marsrover.model.rover.Position;
 import com.marsrover.model.rover.Rover;
 import com.marsrover.model.rover.RoverDto;
+import com.marsrover.model.space.Obstacle;
 import com.marsrover.model.space.Space;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -15,9 +16,11 @@ import java.util.Map;
 @ApplicationScoped
 public class RoverService {
 
+    final Map<DirectionEnum, List<DirectionEnum>> directionMap = getMapDirections();
+
     public Boolean create(RoverDto command, Space space) {
 
-        if (!space.getObstacleByPositions(command.getPosition().getX(), command.getPosition().getY()).isEmpty()) {
+        if (space.getObstacleByPosition(command.getPosition()) != null) {
             return false;
         }
 
@@ -26,30 +29,29 @@ public class RoverService {
         return true;
     }
 
-    public void moveRover(Space space, List<String> commands) {
-
-        Map<DirectionEnum, List<DirectionEnum>> directionMap = getMapDirections();
+    public Obstacle moveRover(Space space, List<String> commands) {
 
         Rover rover = space.getRover();
-        List<DirectionEnum> nextRoverDirections = directionMap.get(rover.getDirection());
+        Obstacle obstacle = null;
 
         for (String command : commands) {
             switch (command.toUpperCase()) {
-                case "R": {
-                    rover.setDirection(DirectionEnum.valueOf(nextRoverDirections.get(1).getValue()));
-                    break;
-                }
+                case "R":
                 case "L": {
-                    rover.setDirection(DirectionEnum.valueOf(nextRoverDirections.get(0).getValue()));
+                    rover.setDirection(getNextDirection(rover.getDirection(), command));
                     break;
                 }
                 case "F":
                 case "B": {
-                    move(space, command);
+                    obstacle = move(space, command);
                     break;
                 }
             }
+            if (obstacle != null) {
+                return obstacle;
+            }
         }
+        return null;
     }
 
     private Map<DirectionEnum, List<DirectionEnum>> getMapDirections() {
@@ -61,7 +63,13 @@ public class RoverService {
         return directions;
     }
 
-    private void move(Space space, String command) {
+    private DirectionEnum getNextDirection(DirectionEnum currentDirection, String command) {
+
+        List<DirectionEnum> nextRoverDirections = directionMap.get(currentDirection);
+        return command.equals("R") ? DirectionEnum.valueOf(nextRoverDirections.get(1).getValue()) : DirectionEnum.valueOf(nextRoverDirections.get(0).getValue());
+    }
+
+    private Obstacle move(Space space, String command) {
 
         Position roverPosition = space.getRover().getPosition();
         Position newPosition = new Position(roverPosition.getX(), roverPosition.getY());
@@ -100,10 +108,12 @@ public class RoverService {
                 break;
             }
         }
-        //TODO: cosa fare se c'è un ostacolo?
-        //TODO: se il rover arriva al limite dello spazio, riprendere dal lato opposto
-        if (space.getObstacleByPositions(newPosition.getX(), newPosition.getY()).isEmpty()) {
+        newPosition = space.updatePositionIfOutOfBounds(newPosition);
+
+        Obstacle existingObstacle = space.getObstacleByPosition(newPosition);
+        if (existingObstacle == null) {
             space.getRover().setPosition(newPosition);
         }
+        return existingObstacle;
     }
 }

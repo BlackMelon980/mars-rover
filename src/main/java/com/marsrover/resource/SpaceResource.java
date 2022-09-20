@@ -31,8 +31,9 @@ public class SpaceResource {
 
         spaceService.initSpaceWithObstacles(space, spaceDto);
 
-        String spaceView = spaceService.getSpaceView(space);
-        SpaceStationResponse response = new SpaceStationResponse("Space situation", space.getRover(), space.getObstacles(), spaceView);
+        String spaceView = space.getSpaceView();
+        System.out.println(spaceView);
+        SpaceStationResponse response = new SpaceStationResponse("Space situation", space.getRover(), space.getObstacles());
 
         return Response.ok(response).build();
     }
@@ -40,20 +41,9 @@ public class SpaceResource {
     @GET
     public Response getSpace() {
 
-        String spaceView = spaceService.getSpaceView(space);
-        SpaceStationResponse response = new SpaceStationResponse("Space situation", space.getRover(), space.getObstacles(), spaceView);
-        return Response.ok(response).build();
-
-    }
-
-
-    @PUT
-    @Path("/clear")
-    public Response clearSpace() {
-
-        spaceService.clearSpace(space);
-        String spaceView = spaceService.getSpaceView(space);
-        SpaceStationResponse response = new SpaceStationResponse("Now the space is clean", space.getRover(), space.getObstacles(), spaceView);
+        String spaceView = space.getSpaceView();
+        System.out.println(spaceView);
+        SpaceStationResponse response = new SpaceStationResponse("Space situation", space.getRover(), space.getObstacles());
         return Response.ok(response).build();
 
     }

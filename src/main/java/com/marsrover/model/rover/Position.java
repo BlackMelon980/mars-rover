@@ -11,4 +11,13 @@ public class Position {
 
     private Integer x;
     private Integer y;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Position)) return false;
+        Position position = (Position) o;
+        return x.equals(position.x) && y.equals(position.y);
+    }
+
 }

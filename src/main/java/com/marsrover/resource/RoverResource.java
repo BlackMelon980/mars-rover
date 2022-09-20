@@ -2,9 +2,9 @@ package com.marsrover.resource;
 
 import com.marsrover.model.response.SpaceStationResponse;
 import com.marsrover.model.rover.RoverDto;
+import com.marsrover.model.space.Obstacle;
 import com.marsrover.model.space.Space;
 import com.marsrover.service.rover.RoverService;
-import com.marsrover.service.space.SpaceService;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
@@ -19,8 +19,6 @@ public class RoverResource {
 
     @Inject
     RoverService roverService;
-    @Inject
-    SpaceService spaceService;
 
     @Inject
     Space space;
@@ -42,21 +40,28 @@ public class RoverResource {
             return Response.status(Response.Status.BAD_REQUEST.getStatusCode()).entity("Error position initialization. There is an obstacle!").build();
         }
 
-        String spaceView = spaceService.getSpaceView(space);
-        SpaceStationResponse response = new SpaceStationResponse("Space situation", space.getRover(), space.getObstacles(), spaceView);
+        String spaceView = space.getSpaceView();
+        System.out.println(spaceView);
+        SpaceStationResponse response = new SpaceStationResponse("Space situation", space.getRover(), space.getObstacles());
 
         return Response.ok(response).build();
     }
 
     @PUT
     @Path("/move")
-    public Response getCommands(List<String> commands) {
+    public Response sendCommands(List<String> commands) {
 
-        roverService.moveRover(space, commands);
-        String spaceView = spaceService.getSpaceView(space);
-        SpaceStationResponse response = new SpaceStationResponse("Space situation", space.getRover(), space.getObstacles(), spaceView);
+        String message = "Space situation";
+        Obstacle obstacle = roverService.moveRover(space, commands);
+        if (obstacle != null) {
+            message = "There is an obstacle in position: (" + obstacle.getPosition().getX() + "," + obstacle.getPosition().getY() + ")";
+        }
 
+        String spaceView = space.getSpaceView();
+        SpaceStationResponse response = new SpaceStationResponse(message, space.getRover(), space.getObstacles());
+        System.out.println(spaceView);
         return Response.ok(response).build();
+
     }
 
     private boolean isInputValid(RoverDto roverDto) {

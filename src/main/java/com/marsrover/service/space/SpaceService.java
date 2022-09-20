@@ -8,7 +8,6 @@ import com.marsrover.utils.NumberUtils;
 
 import javax.enterprise.context.ApplicationScoped;
 import java.util.ArrayList;
-import java.util.List;
 
 @ApplicationScoped
 public class SpaceService {
@@ -18,67 +17,29 @@ public class SpaceService {
         space.setWidth(spaceDto.getWidth());
         space.setHeight(spaceDto.getHeight());
         space.setObstacles(new ArrayList<>());
+        space.getRover().init();
 
-        List<Obstacle> obstacles = new ArrayList<>();
         int obstacleIndex = spaceDto.getObstaclesCount();
 
         while (obstacleIndex > 0) {
 
-            int positionX = NumberUtils.getRandomNumber(0, space.getWidth() - 1);
-            int positionY = NumberUtils.getRandomNumber(0, space.getHeight() - 1);
+            Position newPosition = new Position(
+                    NumberUtils.getRandomNumber(0, space.getWidth() - 1),
+                    NumberUtils.getRandomNumber(0, space.getHeight() - 1)
+            );
 
-            List<Obstacle> existingObstacle = space.getObstacleByPositions(positionX, positionY);
+            Obstacle existingObstacle = space.getObstacleByPosition(newPosition);
+            Position roverPosition = space.getRover().getPosition();
 
-            if (existingObstacle.isEmpty()) {
-                obstacles.add(new Obstacle(new Position(positionX, positionY)));
+            if (!newPosition.equals(roverPosition) && existingObstacle == null) {
+                space.getObstacles().add(new Obstacle(newPosition));
                 obstacleIndex--;
             }
         }
-        space.setObstacles(obstacles);
     }
 
     public void clearSpace(Space space) {
         space.clear();
     }
 
-    public String getSpaceView(Space space) {
-        String spaceView = "";
-        Integer[][] points = initSpaceView(space.getWidth(), space.getHeight());
-
-        addObstaclesToView(space, points);
-
-        if (space.getRover() != null) {
-            Position roverPosition = space.getRover().getPosition();
-            points[roverPosition.getX()][roverPosition.getY()] = 2;
-        }
-
-        for (int posY = 0; posY < space.getHeight(); posY++) {
-
-            spaceView += "|";
-            for (int posX = 0; posX < space.getWidth(); posX++) {
-                spaceView += points[posX][posY] + "  ";
-            }
-            spaceView += "|\n";
-        }
-
-        return spaceView;
-    }
-
-    private Integer[][] initSpaceView(Integer width, Integer height) {
-        Integer[][] points = new Integer[width][height];
-        for (int posY = 0; posY < height; posY++) {
-            for (int posX = 0; posX < width; posX++) {
-                points[posX][posY] = 0;
-            }
-        }
-        return points;
-    }
-
-    private void addObstaclesToView(Space space, Integer[][] points) {
-        for (Obstacle obstacle : space.getObstacles()) {
-            Position obstaclePosition = obstacle.getPosition();
-
-            points[obstaclePosition.getX()][obstaclePosition.getY()] = 1;
-        }
-    }
 }
