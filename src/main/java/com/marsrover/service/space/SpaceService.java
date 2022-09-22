@@ -7,7 +7,6 @@ import com.marsrover.model.space.SpaceDto;
 import com.marsrover.utils.NumberUtils;
 
 import javax.enterprise.context.ApplicationScoped;
-import java.util.ArrayList;
 
 @ApplicationScoped
 public class SpaceService {
@@ -16,7 +15,6 @@ public class SpaceService {
 
         space.setWidth(spaceDto.getWidth());
         space.setHeight(spaceDto.getHeight());
-        space.setObstacles(new ArrayList<>());
         space.getRover().init();
 
         int obstacleIndex = spaceDto.getObstaclesCount();
@@ -36,10 +34,6 @@ public class SpaceService {
                 obstacleIndex--;
             }
         }
-    }
-
-    public void clearSpace(Space space) {
-        space.clear();
     }
 
 }

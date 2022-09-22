@@ -24,17 +24,18 @@ public class Space {
     private List<Obstacle> obstacles = new ArrayList<>();
     private Rover rover = new Rover(new Position(0, 0), DirectionEnum.N);
 
+
+    public void createRover(Position newPosition, DirectionEnum newDirection) {
+        rover.setPosition(newPosition);
+        rover.setDirection(newDirection);
+    }
+
     public Obstacle getObstacleByPosition(Position position) {
 
         Predicate<Obstacle> byPosition = obstacle -> obstacle.getPosition().equals(position);
         List<Obstacle> obstacleList = obstacles.stream().filter(byPosition).collect(Collectors.toList());
         return obstacleList.isEmpty() ? null : obstacleList.get(0);
 
-    }
-
-    public void clear() {
-        obstacles.clear();
-        rover = null;
     }
 
     public Position updatePositionIfOutOfBounds(Position newPosition) {
@@ -55,14 +56,12 @@ public class Space {
     }
 
     public String getSpaceView() {
+
         StringBuilder spaceView = new StringBuilder();
         String[][] points = initSpaceView();
 
         addObstaclesToView(points);
-
-        if (rover != null) {
-            addRoverToView(points);
-        }
+        addRoverToView(points);
 
         for (int y = 0; y < height; y++) {
             spaceView.append(" | ");
@@ -72,11 +71,12 @@ public class Space {
             }
             spaceView.append(" | \n");
         }
-
         return spaceView.toString();
+
     }
 
     private void addRoverToView(String[][] points) {
+
         Position position = rover.getPosition();
         String roverImage = null;
         switch (rover.getDirection()) {
@@ -98,9 +98,11 @@ public class Space {
             }
         }
         points[position.getX()][position.getY()] = roverImage;
+
     }
 
     private String[][] initSpaceView() {
+
         String[][] points = new String[width][height];
         for (int posY = 0; posY < height; posY++) {
             for (int posX = 0; posX < width; posX++) {
@@ -108,9 +110,11 @@ public class Space {
             }
         }
         return points;
+
     }
 
     private void addObstaclesToView(String[][] points) {
+
         for (Obstacle obstacle : obstacles) {
             Position obstaclePosition = obstacle.getPosition();
 

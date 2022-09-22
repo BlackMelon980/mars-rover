@@ -31,7 +31,7 @@ public class RoverResource {
         if (!isInputValid(roverDto)) {
             return Response.status(Response.Status.BAD_REQUEST.getStatusCode()).entity("Values required: " +
                     "position : {x, y} , " +
-                    "direction").build();
+                    "direction: [N, E, S, W]").build();
         }
 
         Boolean isInit = roverService.create(roverDto, space);
