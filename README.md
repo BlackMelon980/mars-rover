@@ -1,70 +1,94 @@
-# mars-rover Project
+# MARS ROVER 🚀
 
-This project uses Quarkus, the Supersonic Subatomic Java Framework.
+You’re part of the team that explores Mars by sending remotely controlled vehicles to the surface of the planet. Develop
+an API that translates the commands sent from earth to instructions that are understood by the rover.
 
-If you want to learn more about Quarkus, please visit its website: https://quarkus.io/ .
+## Requirements
 
-## Running the application in dev mode
+- You are given the initial starting point (x,y) of a rover and the direction (N,S,E,W) it is facing.
+- The rover receives a character array of commands.
+- Implement commands that move the rover forward/backward (f,b).
+- Implement commands that turn the rover left/right (l,r).
+- Implement wrapping from one edge of the grid to another. (planets are spheres after all)
+- Implement obstacle detection before each move to a new square. If a given sequence of commands encounters an obstacle,
+  the rover moves up to the last possible point, aborts the sequence and reports the obstacle.
+
+---
+
+## Run the application
 
 You can run your application in dev mode that enables live coding using:
 
-```shell script
-./mvnw compile quarkus:dev
+```
+mvn quarkus:dev
 ```
 
-> **_NOTE:_**  Quarkus now ships with a Dev UI, which is available in dev mode only at http://localhost:8080/q/dev/.
+Quarkus will start in development mode as normal, but down the bottom of the screen you should see the following:
 
-## Packaging and running the application
-
-The application can be packaged using:
-
-```shell script
-./mvnw package
+```
+Press [r] to resume testing, [o] Toggle test output, [:] for the terminal, [h] for more options>
 ```
 
-It produces the `quarkus-run.jar` file in the `target/quarkus-app/` directory.
-Be aware that it’s not an _über-jar_ as the dependencies are copied into the `target/quarkus-app/lib/` directory.
+Press r and the tests will start running.\
+If you want continuous testing to start automatically you can set
+`quarkus.test.continuous-testing=enabled` in **application.properties.**
+---
 
-The application is now runnable using `java -jar target/quarkus-app/quarkus-run.jar`.
+## Endpoints
 
-If you want to build an _über-jar_, execute the following command:
+## Space
 
-```shell script
-./mvnw package -Dquarkus.package.type=uber-jar
+### Initialize the space
+
+values:
+
+- width
+- height
+- obstaclesCount
+
+```
+curl --location --request POST 'http://localhost:8080/space/init' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "width": 5,
+    "height" : 5,
+    "obstaclesCount" : 7
+}'
 ```
 
-The application, packaged as an _über-jar_, is now runnable using `java -jar target/*-runner.jar`.
+### Show space info
 
-## Creating a native executable
-
-You can create a native executable using:
-
-```shell script
-./mvnw package -Pnative
+```
+curl --location --request GET 'http://localhost:8080/space'
 ```
 
-Or, if you don't have GraalVM installed, you can run the native executable build in a container using:
+## Rover
 
-```shell script
-./mvnw package -Pnative -Dquarkus.native.container-build=true
+### Update rover
+
+Values:
+
+- position : { x, y }
+- direction: [ N, E, S, W ]
+
+```
+curl --location --request POST 'http://localhost:8080/rover' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "position" : {
+        "x" : 3,
+        "y" : 2
+    },
+    "direction" : "E"
+}'
 ```
 
-You can then execute your native executable with: `./target/mars-rover-1.0-SNAPSHOT-runner`
+### Move rover
 
-If you want to learn more about building native executables, please consult https://quarkus.io/guides/maven-tooling.
+Possible values: [ F, B, R, L ]
 
-## Related Guides
-
-- Hibernate Validator ([guide](https://quarkus.io/guides/validation)): Validate object properties (field, getter) and
-  method parameters for your beans (REST, CDI, JPA)
-- RESTEasy Reactive ([guide](https://quarkus.io/guides/resteasy-reactive)): A JAX-RS implementation utilizing build time
-  processing and Vert.x. This extension is not compatible with the quarkus-resteasy extension, or any of the extensions
-  that depend on it.
-
-## Provided Code
-
-### RESTEasy Reactive
-
-Easily start your Reactive RESTful Web Services
-
-[Related guide section...](https://quarkus.io/guides/getting-started-reactive#reactive-jax-rs-resources)
+```
+curl --location --request PUT 'http://localhost:8080/rover/move' \
+--header 'Content-Type: application/json' \
+--data-raw '["F","R"]'
+```

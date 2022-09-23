@@ -1,8 +1,7 @@
-package com.marsrover.service;
+package com.marsrover.service.space;
 
 import com.marsrover.model.space.Space;
 import com.marsrover.model.space.SpaceDto;
-import com.marsrover.service.space.SpaceService;
 import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

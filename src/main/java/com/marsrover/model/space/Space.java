@@ -9,7 +9,9 @@ import lombok.NoArgsConstructor;
 
 import javax.enterprise.context.ApplicationScoped;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -25,7 +27,7 @@ public class Space {
     private Rover rover = new Rover(new Position(0, 0), DirectionEnum.N);
 
 
-    public void createRover(Position newPosition, DirectionEnum newDirection) {
+    public void setRoverValues(Position newPosition, DirectionEnum newDirection) {
         rover.setPosition(newPosition);
         rover.setDirection(newDirection);
     }
@@ -59,7 +61,7 @@ public class Space {
 
         StringBuilder spaceView = new StringBuilder();
         String[][] points = initSpaceView();
-
+        spaceView.append("----- Space situation ----- \n");
         addObstaclesToView(points);
         addRoverToView(points);
 
@@ -77,26 +79,15 @@ public class Space {
 
     private void addRoverToView(String[][] points) {
 
+        Map<DirectionEnum, String> images = new HashMap<>() {{
+            put(DirectionEnum.N, "▲");
+            put(DirectionEnum.E, "▶︎");
+            put(DirectionEnum.S, "▼");
+            put(DirectionEnum.W, "◀︎");
+        }};
+
         Position position = rover.getPosition();
-        String roverImage = null;
-        switch (rover.getDirection()) {
-            case N: {
-                roverImage = "▲";
-                break;
-            }
-            case E: {
-                roverImage = "▶︎";
-                break;
-            }
-            case S: {
-                roverImage = "▼";
-                break;
-            }
-            case W: {
-                roverImage = "◀︎";
-                break;
-            }
-        }
+        String roverImage = images.get(rover.getDirection());
         points[position.getX()][position.getY()] = roverImage;
 
     }
@@ -117,9 +108,9 @@ public class Space {
 
         for (Obstacle obstacle : obstacles) {
             Position obstaclePosition = obstacle.getPosition();
-
             points[obstaclePosition.getX()][obstaclePosition.getY()] = "🪐";
         }
+
     }
 
 }

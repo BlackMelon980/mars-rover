@@ -1,4 +1,4 @@
-package com.marsrover.resource;
+package com.marsrover.resource.space;
 
 import com.marsrover.model.response.SpaceStationResponse;
 import com.marsrover.model.space.Space;
@@ -31,9 +31,8 @@ public class SpaceResource {
 
         spaceService.initSpaceWithObstacles(space, spaceDto);
 
-        String spaceView = space.getSpaceView();
-        System.out.println(spaceView);
-        SpaceStationResponse response = new SpaceStationResponse("Space situation", space.getRover(), space.getObstacles());
+        System.out.println(space.getSpaceView());
+        SpaceStationResponse response = new SpaceStationResponse(space.getRover(), space.getObstacles());
 
         return Response.ok(response).build();
     }
@@ -41,9 +40,8 @@ public class SpaceResource {
     @GET
     public Response getSpace() {
 
-        String spaceView = space.getSpaceView();
-        System.out.println(spaceView);
-        SpaceStationResponse response = new SpaceStationResponse("Space situation", space.getRover(), space.getObstacles());
+        System.out.println(space.getSpaceView());
+        SpaceStationResponse response = new SpaceStationResponse(space.getRover(), space.getObstacles());
         return Response.ok(response).build();
 
     }

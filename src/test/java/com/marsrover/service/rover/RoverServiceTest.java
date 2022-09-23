@@ -1,11 +1,10 @@
-package com.marsrover.service;
+package com.marsrover.service.rover;
 
 import com.marsrover.model.enums.DirectionEnum;
 import com.marsrover.model.rover.Position;
 import com.marsrover.model.rover.RoverDto;
 import com.marsrover.model.space.Obstacle;
 import com.marsrover.model.space.Space;
-import com.marsrover.service.rover.RoverService;
 import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -45,7 +44,7 @@ public class RoverServiceTest {
         roverDto.setPosition(new Position(1, 1));
         roverDto.setDirection(DirectionEnum.N);
 
-        assertTrue(roverService.create(roverDto, space));
+        assertTrue(roverService.changeValues(roverDto, space));
 
     }
 
@@ -56,7 +55,7 @@ public class RoverServiceTest {
         roverDto.setPosition(new Position(3, 2));
         roverDto.setDirection(DirectionEnum.N);
 
-        assertFalse(roverService.create(roverDto, space));
+        assertFalse(roverService.changeValues(roverDto, space));
 
     }
 

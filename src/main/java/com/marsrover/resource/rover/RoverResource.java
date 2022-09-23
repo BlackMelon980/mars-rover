@@ -1,4 +1,4 @@
-package com.marsrover.resource;
+package com.marsrover.resource.rover;
 
 import com.marsrover.model.response.SpaceStationResponse;
 import com.marsrover.model.rover.RoverDto;
@@ -25,8 +25,7 @@ public class RoverResource {
 
 
     @POST
-    @Path("/create")
-    public Response create(RoverDto roverDto) {
+    public Response changeValues(RoverDto roverDto) {
 
         if (!isInputValid(roverDto)) {
             return Response.status(Response.Status.BAD_REQUEST.getStatusCode()).entity("Values required: " +
@@ -34,15 +33,14 @@ public class RoverResource {
                     "direction: [N, E, S, W]").build();
         }
 
-        Boolean isInit = roverService.create(roverDto, space);
+        Boolean isRoverChanged = roverService.changeValues(roverDto, space);
 
-        if (!isInit) {
+        if (!isRoverChanged) {
             return Response.status(Response.Status.BAD_REQUEST.getStatusCode()).entity("Error position initialization. There is an obstacle!").build();
         }
 
-        String spaceView = space.getSpaceView();
-        System.out.println(spaceView);
-        SpaceStationResponse response = new SpaceStationResponse("Space situation", space.getRover(), space.getObstacles());
+        System.out.println(space.getSpaceView());
+        SpaceStationResponse response = new SpaceStationResponse(space.getRover(), space.getObstacles());
 
         return Response.ok(response).build();
     }
@@ -51,15 +49,15 @@ public class RoverResource {
     @Path("/move")
     public Response sendCommands(List<String> commands) {
 
-        String message = "Space situation";
+        String responseMessage = null;
         Obstacle obstacle = roverService.moveRover(space, commands);
+
         if (obstacle != null) {
-            message = "There is an obstacle in position: (" + obstacle.getPosition().getX() + "," + obstacle.getPosition().getY() + ")";
+            responseMessage = "There is an obstacle in position: (" + obstacle.getPosition().getX() + "," + obstacle.getPosition().getY() + ")";
         }
 
-        String spaceView = space.getSpaceView();
-        SpaceStationResponse response = new SpaceStationResponse(message, space.getRover(), space.getObstacles());
-        System.out.println(spaceView);
+        SpaceStationResponse response = new SpaceStationResponse(responseMessage, space.getRover(), space.getObstacles());
+        System.out.println(space.getSpaceView());
         return Response.ok(response).build();
 
     }

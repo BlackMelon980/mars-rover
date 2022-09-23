@@ -1,5 +1,6 @@
 package com.marsrover.model.response;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.marsrover.model.rover.Rover;
 import com.marsrover.model.space.Obstacle;
 import lombok.AllArgsConstructor;
@@ -13,8 +14,14 @@ import java.util.List;
 @AllArgsConstructor
 public class SpaceStationResponse {
 
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String message;
     private Rover rover;
     private List<Obstacle> obstacles;
-    
+
+
+    public SpaceStationResponse(Rover rover, List<Obstacle> obstacles) {
+        this.rover = rover;
+        this.obstacles = obstacles;
+    }
 }

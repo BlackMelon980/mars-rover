@@ -1,9 +1,7 @@
-package com.marsrover.model;
+package com.marsrover.model.space;
 
 import com.marsrover.model.enums.DirectionEnum;
 import com.marsrover.model.rover.Position;
-import com.marsrover.model.space.Obstacle;
-import com.marsrover.model.space.Space;
 import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -36,7 +34,7 @@ public class SpaceTest {
     void updateRoverWithNewPositionAndDirection() {
 
         Position newPosition = new Position(0, 1);
-        space.createRover(newPosition, DirectionEnum.E);
+        space.setRoverValues(newPosition, DirectionEnum.E);
         assertTrue(space.getRover().getPosition().equals(newPosition) && space.getRover().getDirection().equals(DirectionEnum.E));
 
     }

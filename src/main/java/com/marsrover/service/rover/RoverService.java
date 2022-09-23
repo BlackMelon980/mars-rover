@@ -18,13 +18,14 @@ public class RoverService {
 
     final Map<DirectionEnum, List<DirectionEnum>> directionMap = getMapDirections();
 
-    public Boolean create(RoverDto command, Space space) {
+
+    public Boolean changeValues(RoverDto command, Space space) {
 
         if (space.getObstacleByPosition(command.getPosition()) != null) {
             return false;
         }
 
-        space.createRover(command.getPosition(), command.getDirection());
+        space.setRoverValues(command.getPosition(), command.getDirection());
         return true;
     }
 
@@ -61,7 +62,7 @@ public class RoverService {
         directions.put(DirectionEnum.S, new ArrayList<>(List.of(DirectionEnum.E, DirectionEnum.W)));
         directions.put(DirectionEnum.W, new ArrayList<>(List.of(DirectionEnum.S, DirectionEnum.N)));
         return directions;
-        
+
     }
 
     private DirectionEnum getNextDirection(DirectionEnum currentDirection, String command) {
