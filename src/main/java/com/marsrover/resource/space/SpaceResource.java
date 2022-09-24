@@ -1,6 +1,6 @@
 package com.marsrover.resource.space;
 
-import com.marsrover.model.response.SpaceStationResponse;
+import com.marsrover.model.response.SpaceInfoResponse;
 import com.marsrover.model.space.Space;
 import com.marsrover.model.space.SpaceDto;
 import com.marsrover.service.space.SpaceService;
@@ -32,7 +32,7 @@ public class SpaceResource {
         spaceService.initSpaceWithObstacles(space, spaceDto);
 
         System.out.println(space.getSpaceView());
-        SpaceStationResponse response = new SpaceStationResponse(space.getRover(), space.getObstacles());
+        SpaceInfoResponse response = new SpaceInfoResponse(space);
 
         return Response.ok(response).build();
     }
@@ -41,7 +41,7 @@ public class SpaceResource {
     public Response getSpace() {
 
         System.out.println(space.getSpaceView());
-        SpaceStationResponse response = new SpaceStationResponse(space.getRover(), space.getObstacles());
+        SpaceInfoResponse response = new SpaceInfoResponse(space);
         return Response.ok(response).build();
 
     }

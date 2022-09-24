@@ -19,13 +19,16 @@ public class RoverService {
     final Map<DirectionEnum, List<DirectionEnum>> directionMap = getMapDirections();
 
 
-    public Boolean changeValues(RoverDto command, Space space) {
+    public Boolean updateRover(RoverDto roverDto, Space space) {
 
-        if (space.getObstacleByPosition(command.getPosition()) != null) {
+        if (space.getObstacleByPosition(roverDto.getPosition()) != null) {
             return false;
         }
 
-        space.setRoverValues(command.getPosition(), command.getDirection());
+        Rover rover = space.getRover();
+        rover.setPosition(roverDto.getPosition());
+        rover.setDirection(roverDto.getDirection());
+        
         return true;
     }
 

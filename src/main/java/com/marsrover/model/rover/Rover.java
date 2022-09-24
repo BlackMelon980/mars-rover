@@ -1,21 +1,35 @@
 package com.marsrover.model.rover;
 
 import com.marsrover.model.enums.DirectionEnum;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
+
 public class Rover {
 
-    private Position position;
-    private DirectionEnum direction;
+    private Position position = new Position(0, 0);
+    private DirectionEnum direction = DirectionEnum.N;
 
-    public void init() {
-        position.setX(0);
-        position.setY(0);
-        direction = DirectionEnum.N;
+
+    public Rover() {
+    }
+
+    public Rover(Position position, DirectionEnum direction) {
+        this.position = position;
+        this.direction = direction;
+    }
+
+    public Position getPosition() {
+        return position;
+    }
+
+    public void setPosition(Position position) {
+        this.position = position;
+    }
+
+    public DirectionEnum getDirection() {
+        return direction;
+    }
+
+    public void setDirection(DirectionEnum direction) {
+        this.direction = direction;
     }
 }

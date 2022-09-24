@@ -3,9 +3,6 @@ package com.marsrover.model.space;
 import com.marsrover.model.enums.DirectionEnum;
 import com.marsrover.model.rover.Position;
 import com.marsrover.model.rover.Rover;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import javax.enterprise.context.ApplicationScoped;
 import java.util.ArrayList;
@@ -15,22 +12,15 @@ import java.util.Map;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
+
 @ApplicationScoped
 public class Space {
 
     private Integer width = 5;
     private Integer height = 5;
     private List<Obstacle> obstacles = new ArrayList<>();
-    private Rover rover = new Rover(new Position(0, 0), DirectionEnum.N);
+    private Rover rover = new Rover();
 
-
-    public void setRoverValues(Position newPosition, DirectionEnum newDirection) {
-        rover.setPosition(newPosition);
-        rover.setDirection(newDirection);
-    }
 
     public Obstacle getObstacleByPosition(Position position) {
 
@@ -61,7 +51,7 @@ public class Space {
 
         StringBuilder spaceView = new StringBuilder();
         String[][] points = initSpaceView();
-        spaceView.append("----- Space situation ----- \n");
+        spaceView.append("\n---------------------- \n");
         addObstaclesToView(points);
         addRoverToView(points);
 
@@ -113,4 +103,36 @@ public class Space {
 
     }
 
+
+    public Integer getWidth() {
+        return width;
+    }
+
+    public void setWidth(Integer width) {
+        this.width = width;
+    }
+
+    public Integer getHeight() {
+        return height;
+    }
+
+    public void setHeight(Integer height) {
+        this.height = height;
+    }
+
+    public List<Obstacle> getObstacles() {
+        return obstacles;
+    }
+
+    public void setObstacles(List<Obstacle> obstacles) {
+        this.obstacles = obstacles;
+    }
+
+    public Rover getRover() {
+        return rover;
+    }
+
+    public void setRover(Rover rover) {
+        this.rover = rover;
+    }
 }

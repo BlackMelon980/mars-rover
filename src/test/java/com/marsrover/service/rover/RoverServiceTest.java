@@ -38,24 +38,24 @@ public class RoverServiceTest {
     }
 
     @Test
-    void createRover() {
+    void updateRover() {
 
         RoverDto roverDto = new RoverDto();
         roverDto.setPosition(new Position(1, 1));
         roverDto.setDirection(DirectionEnum.N);
 
-        assertTrue(roverService.changeValues(roverDto, space));
+        assertTrue(roverService.updateRover(roverDto, space));
 
     }
 
     @Test
-    void roverIsNotCreatedBecauseExistAnObstacle() {
+    void roverCannotOverlapObstacle() {
 
         RoverDto roverDto = new RoverDto();
         roverDto.setPosition(new Position(3, 2));
         roverDto.setDirection(DirectionEnum.N);
 
-        assertFalse(roverService.changeValues(roverDto, space));
+        assertFalse(roverService.updateRover(roverDto, space));
 
     }
 

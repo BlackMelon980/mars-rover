@@ -1,17 +1,21 @@
 package com.marsrover.model.enums;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
 
-
-@AllArgsConstructor
 public enum DirectionEnum {
 
-    N ("N"),
-    E ("E"),
-    S ("S"),
-    W ("W");
+    N("N"),
+    E("E"),
+    S("S"),
+    W("W");
 
-    @Getter
+
     private final String value;
+
+    DirectionEnum(String value) {
+        this.value = value;
+    }
+
+    public String getValue() {
+        return value;
+    }
 }

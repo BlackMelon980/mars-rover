@@ -15,7 +15,6 @@ public class SpaceService {
 
         space.setWidth(spaceDto.getWidth());
         space.setHeight(spaceDto.getHeight());
-        space.getRover().init();
 
         int obstacleIndex = spaceDto.getObstaclesCount();
 

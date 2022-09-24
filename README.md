@@ -15,6 +15,13 @@ an API that translates the commands sent from earth to instructions that are und
 
 ---
 
+## Prerequisites
+
+In order to run this application, you need the following:
+
+- JDK 11+ installed
+- Apache Maven 3.8.1+
+
 ## Run the application
 
 You can run your application in dev mode that enables live coding using:
@@ -23,15 +30,14 @@ You can run your application in dev mode that enables live coding using:
 mvn quarkus:dev
 ```
 
-Quarkus will start in development mode as normal, but down the bottom of the screen you should see the following:
+## Testing
+
+Use the following command to test the application:
 
 ```
-Press [r] to resume testing, [o] Toggle test output, [:] for the terminal, [h] for more options>
+mvn test
 ```
 
-Press r and the tests will start running.\
-If you want continuous testing to start automatically you can set
-`quarkus.test.continuous-testing=enabled` in **application.properties.**
 ---
 
 ## Endpoints
@@ -40,7 +46,7 @@ If you want continuous testing to start automatically you can set
 
 ### Initialize the space
 
-values:
+Values:
 
 - width
 - height
@@ -72,12 +78,12 @@ Values:
 - direction: [ N, E, S, W ]
 
 ```
-curl --location --request POST 'http://localhost:8080/rover' \
+curl --location --request PUT 'http://localhost:8080/rover' \
 --header 'Content-Type: application/json' \
 --data-raw '{
     "position" : {
-        "x" : 3,
-        "y" : 2
+        "x" : 2,
+        "y" : 3
     },
     "direction" : "E"
 }'
