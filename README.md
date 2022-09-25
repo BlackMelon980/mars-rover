@@ -24,7 +24,7 @@ In order to run this application, you need the following:
 
 ## Run the application
 
-You can run your application in dev mode that enables live coding using:
+Run the application in dev mode:
 
 ```
 mvn quarkus:dev
@@ -40,13 +40,13 @@ mvn test
 
 ---
 
-## Endpoints
+# Endpoints
 
 ## Planet
 
 ### Planet initialization
 
-Initialize planet with width and height and obstacles with random position.
+Initialize planet with width, height and obstacles with random position.
 
 Body:
 
@@ -66,13 +66,13 @@ curl --location --request POST 'http://localhost:8080/planet/init' \
 
 ### Show planet info
 
-Get current planet, obstacles and rover (if exists).
+Get current planet, obstacles and rover.
 
 ```
 curl --location --request GET 'http://localhost:8080/planet'
 ```
 
-### Add new obstacle
+### Create obstacle
 
 Add new obstacle to the planet at specified position.
 
@@ -90,9 +90,9 @@ curl --location --request POST 'http://localhost:8080/planet/obstacle' \
 }'
 ```
 
-### Delete an obstacle
+### Delete obstacle
 
-Delete obstacle at specified position.
+Remove obstacle at specified position.
 
 Body:
 
@@ -120,7 +120,7 @@ Body:
     - x: Integer
     - y: Integer
 - direction: String
-  ( possible values: [ N, E, S, W ] )
+  ( allowed values: "N", "E", "S", "W"  )
 
 ```
 curl --location --request PUT 'http://localhost:8080/rover' \
@@ -138,9 +138,12 @@ curl --location --request PUT 'http://localhost:8080/rover' \
 
 Move rover using a list of commands.
 
-Body: [String]
+Body: [ String ]
 
-Possible values: [ F, B, R, L ]
+Allowed values:  "F", "B", "R", "L".
+
+- "F", "B" : move the rover forward/backward
+- "L", "R" : turn the rover left/right.
 
 ```
 curl --location --request PUT 'http://localhost:8080/rover/move' \
