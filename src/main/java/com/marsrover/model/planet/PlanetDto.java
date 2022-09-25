@@ -1,13 +1,13 @@
-package com.marsrover.model.space;
+package com.marsrover.model.planet;
 
-public class SpaceDto {
+public class PlanetDto {
 
     private Integer width;
     private Integer height;
     private Integer obstaclesCount;
 
-    
-    public SpaceDto(Integer width, Integer height, Integer obstaclesCount) {
+
+    public PlanetDto(Integer width, Integer height, Integer obstaclesCount) {
         this.width = width;
         this.height = height;
         this.obstaclesCount = obstaclesCount;

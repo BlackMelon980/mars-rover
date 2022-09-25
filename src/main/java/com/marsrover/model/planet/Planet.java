@@ -1,4 +1,4 @@
-package com.marsrover.model.space;
+package com.marsrover.model.planet;
 
 import com.marsrover.model.enums.DirectionEnum;
 import com.marsrover.model.obstacle.Obstacle;
@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 
 
 @ApplicationScoped
-public class Space {
+public class Planet {
 
     private Integer width = 5;
     private Integer height = 5;
@@ -54,23 +54,23 @@ public class Space {
 
     }
 
-    public String getSpaceView() {
+    public String getPlanetView() {
 
-        StringBuilder spaceView = new StringBuilder();
-        String[][] points = initSpaceView();
-        spaceView.append("\n---------------------- \n");
+        StringBuilder planetView = new StringBuilder();
+        String[][] points = initPlanetView();
+        planetView.append("\n---------------------- \n");
         addObstaclesToView(points);
         addRoverToView(points);
 
         for (int y = 0; y < height; y++) {
-            spaceView.append(" | ");
+            planetView.append(" | ");
             for (int x = 0; x < width; x++) {
-                spaceView.append(points[x][y]);
-                spaceView.append("  ");
+                planetView.append(points[x][y]);
+                planetView.append("  ");
             }
-            spaceView.append(" | \n");
+            planetView.append(" | \n");
         }
-        return spaceView.toString();
+        return planetView.toString();
 
     }
 
@@ -89,7 +89,7 @@ public class Space {
 
     }
 
-    private String[][] initSpaceView() {
+    private String[][] initPlanetView() {
 
         String[][] points = new String[width][height];
         for (int posY = 0; posY < height; posY++) {

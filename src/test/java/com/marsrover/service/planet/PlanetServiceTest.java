@@ -1,9 +1,9 @@
-package com.marsrover.service.space;
+package com.marsrover.service.planet;
 
 import com.marsrover.model.obstacle.Obstacle;
+import com.marsrover.model.planet.Planet;
+import com.marsrover.model.planet.PlanetDto;
 import com.marsrover.model.position.Position;
-import com.marsrover.model.space.Space;
-import com.marsrover.model.space.SpaceDto;
 import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,38 +15,38 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 @QuarkusTest
-public class SpaceServiceTest {
+public class PlanetServiceTest {
 
     @Inject
-    SpaceService spaceService;
+    PlanetService planetService;
 
-    Space space;
+    Planet planet;
 
 
     @BeforeEach
     void setUp() {
-        space = new Space();
+        planet = new Planet();
     }
 
     @Test
-    void initSpace() {
+    void initPlanet() {
 
-        SpaceDto spaceDto = new SpaceDto(5, 7, 4);
-        spaceService.initSpaceWithObstacles(space, spaceDto);
+        PlanetDto planetDto = new PlanetDto(5, 7, 4);
+        planetService.initPlanetWithObstacles(planet, planetDto);
 
-        assertEquals(4, space.getObstacles().size());
-        assertEquals(5, space.getWidth());
-        assertEquals(7, space.getHeight());
+        assertEquals(4, planet.getObstacles().size());
+        assertEquals(5, planet.getWidth());
+        assertEquals(7, planet.getHeight());
     }
 
     @Test
     void addObstacleAtPosition() {
 
         Position position = new Position(1, 1);
-        Boolean obstacleWasAdded = spaceService.addObstacle(space, position);
+        Boolean obstacleWasAdded = planetService.addObstacle(planet, position);
 
         assertTrue(obstacleWasAdded);
-        assertNotNull(space.getObstacleByPosition(position));
+        assertNotNull(planet.getObstacleByPosition(position));
 
     }
 
@@ -59,23 +59,23 @@ public class SpaceServiceTest {
                 new Obstacle(new Position(3, 2)),
                 new Obstacle(new Position(1, 3))
         ));
-        space.setObstacles(obstacles);
+        planet.setObstacles(obstacles);
 
         Position position = new Position(1, 0);
-        Boolean obstacleWasAdded = spaceService.addObstacle(space, position);
+        Boolean obstacleWasAdded = planetService.addObstacle(planet, position);
 
         assertFalse(obstacleWasAdded);
 
     }
 
     @Test
-    void cannotAddObstacleOutsideOfSpace() {
+    void cannotAddObstacleOutsideOfPlanet() {
 
         Position position = new Position(10, 10);
-        Boolean obstacleWasAdded = spaceService.addObstacle(space, position);
+        Boolean obstacleWasAdded = planetService.addObstacle(planet, position);
 
         assertFalse(obstacleWasAdded);
-        assertNull(space.getObstacleByPosition(position));
+        assertNull(planet.getObstacleByPosition(position));
 
     }
 
@@ -86,15 +86,15 @@ public class SpaceServiceTest {
                 new Obstacle(new Position(1, 0)),
                 new Obstacle(new Position(3, 0))
         ));
-        space.setObstacles(obstacles);
+        planet.setObstacles(obstacles);
 
         Position position = new Position(1, 0);
 
-        assertNotNull(space.getObstacleByPosition(position));
-        Boolean obstacleWasDeleted = spaceService.deleteObstacle(space, position);
+        assertNotNull(planet.getObstacleByPosition(position));
+        Boolean obstacleWasDeleted = planetService.deleteObstacle(planet, position);
 
         assertTrue(obstacleWasDeleted);
-        assertNull(space.getObstacleByPosition(position));
+        assertNull(planet.getObstacleByPosition(position));
 
     }
 
@@ -105,11 +105,11 @@ public class SpaceServiceTest {
                 new Obstacle(new Position(1, 0)),
                 new Obstacle(new Position(3, 0))
         ));
-        space.setObstacles(obstacles);
+        planet.setObstacles(obstacles);
 
         Position position = new Position(2, 1);
-        assertNull(space.getObstacleByPosition(position));
-        Boolean obstacleWasDeleted = spaceService.deleteObstacle(space, position);
+        assertNull(planet.getObstacleByPosition(position));
+        Boolean obstacleWasDeleted = planetService.deleteObstacle(planet, position);
 
         assertFalse(obstacleWasDeleted);
 

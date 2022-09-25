@@ -2,10 +2,10 @@ package com.marsrover.service.rover;
 
 import com.marsrover.model.enums.DirectionEnum;
 import com.marsrover.model.obstacle.Obstacle;
+import com.marsrover.model.planet.Planet;
 import com.marsrover.model.position.Position;
 import com.marsrover.model.rover.Rover;
 import com.marsrover.model.rover.RoverDto;
-import com.marsrover.model.space.Space;
 
 import javax.enterprise.context.ApplicationScoped;
 import java.util.ArrayList;
@@ -19,27 +19,27 @@ public class RoverService {
     final Map<DirectionEnum, List<DirectionEnum>> directionMap = getMapDirections();
 
 
-    public Boolean updateRover(RoverDto roverDto, Space space) {
+    public Boolean updateRover(RoverDto roverDto, Planet planet) {
 
-        Boolean isOutOfBounds = space.checkPositionOutOfBounds(roverDto.getPosition());
+        Boolean isOutOfBounds = planet.checkPositionOutOfBounds(roverDto.getPosition());
         if (isOutOfBounds) {
             return false;
         }
 
-        if (space.getObstacleByPosition(roverDto.getPosition()) != null) {
+        if (planet.getObstacleByPosition(roverDto.getPosition()) != null) {
             return false;
         }
 
-        Rover rover = space.getRover();
+        Rover rover = planet.getRover();
         rover.setPosition(roverDto.getPosition());
         rover.setDirection(roverDto.getDirection());
 
         return true;
     }
 
-    public Obstacle moveRover(Space space, List<String> commands) {
+    public Obstacle moveRover(Planet planet, List<String> commands) {
 
-        Rover rover = space.getRover();
+        Rover rover = planet.getRover();
         Obstacle obstacle = null;
 
         for (String command : commands) {
@@ -51,7 +51,7 @@ public class RoverService {
                 }
                 case "F":
                 case "B": {
-                    obstacle = move(space, command);
+                    obstacle = move(planet, command);
                     break;
                 }
             }
@@ -79,12 +79,12 @@ public class RoverService {
         return command.equals("R") ? DirectionEnum.valueOf(nextRoverDirections.get(1).getValue()) : DirectionEnum.valueOf(nextRoverDirections.get(0).getValue());
     }
 
-    private Obstacle move(Space space, String command) {
+    private Obstacle move(Planet planet, String command) {
 
-        Position roverPosition = space.getRover().getPosition();
+        Position roverPosition = planet.getRover().getPosition();
         Position newPosition = new Position(roverPosition.getX(), roverPosition.getY());
 
-        switch (space.getRover().getDirection()) {
+        switch (planet.getRover().getDirection()) {
             case N: {
                 if (command.equals("F")) {
                     newPosition.setY(roverPosition.getY() - 1);
@@ -118,11 +118,11 @@ public class RoverService {
                 break;
             }
         }
-        newPosition = space.updatePositionIfOutOfBounds(newPosition);
+        newPosition = planet.updatePositionIfOutOfBounds(newPosition);
 
-        Obstacle existingObstacle = space.getObstacleByPosition(newPosition);
+        Obstacle existingObstacle = planet.getObstacleByPosition(newPosition);
         if (existingObstacle == null) {
-            space.getRover().setPosition(newPosition);
+            planet.getRover().setPosition(newPosition);
         }
         return existingObstacle;
     }

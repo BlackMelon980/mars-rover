@@ -1,9 +1,9 @@
 package com.marsrover.resource.rover;
 
 import com.marsrover.model.obstacle.Obstacle;
+import com.marsrover.model.planet.Planet;
+import com.marsrover.model.planet.PlanetInfoResponse;
 import com.marsrover.model.rover.RoverDto;
-import com.marsrover.model.space.Space;
-import com.marsrover.model.space.SpaceInfoResponse;
 import com.marsrover.service.rover.RoverService;
 
 import javax.inject.Inject;
@@ -24,7 +24,7 @@ public class RoverResource {
     RoverService roverService;
 
     @Inject
-    Space space;
+    Planet planet;
 
 
     @PUT
@@ -36,14 +36,14 @@ public class RoverResource {
                     "direction: [N, E, S, W]").build();
         }
 
-        Boolean isRoverChanged = roverService.updateRover(roverDto, space);
+        Boolean isRoverChanged = roverService.updateRover(roverDto, planet);
 
         if (!isRoverChanged) {
             return Response.status(Response.Status.BAD_REQUEST.getStatusCode()).entity("Update Error: There is an obstacle!").build();
         }
 
-        System.out.println(space.getSpaceView());
-        SpaceInfoResponse response = new SpaceInfoResponse(space);
+        System.out.println(planet.getPlanetView());
+        PlanetInfoResponse response = new PlanetInfoResponse(planet);
 
         return Response.ok(response).build();
     }
@@ -53,14 +53,14 @@ public class RoverResource {
     public Response sendCommands(List<String> commands) {
 
         String responseMessage = null;
-        Obstacle obstacle = roverService.moveRover(space, commands);
+        Obstacle obstacle = roverService.moveRover(planet, commands);
 
         if (obstacle != null) {
             responseMessage = "There is an obstacle in position: (" + obstacle.getPosition().getX() + "," + obstacle.getPosition().getY() + ")";
         }
 
-        SpaceInfoResponse response = new SpaceInfoResponse(responseMessage, space);
-        System.out.println(space.getSpaceView());
+        PlanetInfoResponse response = new PlanetInfoResponse(responseMessage, planet);
+        System.out.println(planet.getPlanetView());
         return Response.ok(response).build();
 
     }

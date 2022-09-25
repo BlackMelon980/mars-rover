@@ -2,10 +2,10 @@ package com.marsrover.service.rover;
 
 import com.marsrover.model.enums.DirectionEnum;
 import com.marsrover.model.obstacle.Obstacle;
+import com.marsrover.model.planet.Planet;
 import com.marsrover.model.position.Position;
 import com.marsrover.model.rover.Rover;
 import com.marsrover.model.rover.RoverDto;
-import com.marsrover.model.space.Space;
 import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,20 +21,20 @@ public class RoverServiceTest {
 
     @Inject
     RoverService roverService;
-    Space space;
+    Planet planet;
     List<Obstacle> obstacles;
 
     @BeforeEach
     void setUp() {
 
-        space = new Space();
+        planet = new Planet();
         obstacles = new ArrayList<>(List.of(
                 new Obstacle(new Position(1, 0)),
                 new Obstacle(new Position(3, 0)),
                 new Obstacle(new Position(3, 2)),
                 new Obstacle(new Position(1, 3))
         ));
-        space.setObstacles(obstacles);
+        planet.setObstacles(obstacles);
 
     }
 
@@ -45,9 +45,9 @@ public class RoverServiceTest {
         roverDto.setPosition(new Position(1, 1));
         roverDto.setDirection(DirectionEnum.N);
 
-        assertTrue(roverService.updateRover(roverDto, space));
+        assertTrue(roverService.updateRover(roverDto, planet));
 
-        Rover rover = space.getRover();
+        Rover rover = planet.getRover();
         assertEquals(new Position(1, 1), rover.getPosition());
         assertEquals(DirectionEnum.N, rover.getDirection());
     }
@@ -59,9 +59,9 @@ public class RoverServiceTest {
         roverDto.setPosition(new Position(10, 10));
         roverDto.setDirection(DirectionEnum.N);
 
-        assertFalse(roverService.updateRover(roverDto, space));
+        assertFalse(roverService.updateRover(roverDto, planet));
 
-        Rover rover = space.getRover();
+        Rover rover = planet.getRover();
         assertEquals(new Position(0, 0), rover.getPosition());
         assertEquals(DirectionEnum.N, rover.getDirection());
     }
@@ -73,7 +73,7 @@ public class RoverServiceTest {
         roverDto.setPosition(new Position(3, 2));
         roverDto.setDirection(DirectionEnum.N);
 
-        assertFalse(roverService.updateRover(roverDto, space));
+        assertFalse(roverService.updateRover(roverDto, planet));
 
     }
 
@@ -82,8 +82,8 @@ public class RoverServiceTest {
 
         List<String> commands = new ArrayList<>(List.of("L", "L", "F"));
 
-        roverService.moveRover(space, commands);
-        Rover rover = space.getRover();
+        roverService.moveRover(planet, commands);
+        Rover rover = planet.getRover();
 
         assertEquals(new Position(0, 1), rover.getPosition());
         assertEquals(DirectionEnum.S, rover.getDirection());
@@ -93,9 +93,9 @@ public class RoverServiceTest {
     void moveRoverButIsInterruptedByObstacle() {
 
         List<String> commands = new ArrayList<>(List.of("R", "F"));
-        Rover rover = space.getRover();
+        Rover rover = planet.getRover();
 
-        assertNotNull(roverService.moveRover(space, commands));
+        assertNotNull(roverService.moveRover(planet, commands));
         assertEquals(new Position(0, 0), rover.getPosition());
     }
 
@@ -104,8 +104,8 @@ public class RoverServiceTest {
 
         List<String> commands = new ArrayList<>(List.of("FR", "LB", "1"));
 
-        roverService.moveRover(space, commands);
-        Rover rover = space.getRover();
+        roverService.moveRover(planet, commands);
+        Rover rover = planet.getRover();
 
         assertEquals(new Position(0, 0), rover.getPosition());
         assertEquals(DirectionEnum.N, rover.getDirection());

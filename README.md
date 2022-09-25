@@ -42,18 +42,20 @@ mvn test
 
 ## Endpoints
 
-## Space
+## Planet
 
-### Initialize
+### Planet initialization
 
-Values:
+Initialize planet with width and height and obstacles with random position.
 
-- width
-- height
-- obstaclesCount
+Body:
+
+- width: Integer
+- height: Integer
+- obstaclesCount: Integer
 
 ```
-curl --location --request POST 'http://localhost:8080/space/init' \
+curl --location --request POST 'http://localhost:8080/planet/init' \
 --header 'Content-Type: application/json' \
 --data-raw '{
     "width": 5,
@@ -62,21 +64,25 @@ curl --location --request POST 'http://localhost:8080/space/init' \
 }'
 ```
 
-### Show space info
+### Show planet info
+
+Get current planet, obstacles and rover (if exists).
 
 ```
-curl --location --request GET 'http://localhost:8080/space'
+curl --location --request GET 'http://localhost:8080/planet'
 ```
 
-### Add a new obstacle
+### Add new obstacle
 
-Values:
+Add new obstacle to the planet at specified position.
 
-- x
-- y
+Body:
+
+- x: Integer
+- y: Integer
 
 ```
-curl --location --request POST 'http://localhost:8080/space/obstacle' \
+curl --location --request POST 'http://localhost:8080/planet/obstacle' \
 --header 'Content-Type: application/json' \
 --data-raw '{
     "x": 1,
@@ -86,13 +92,15 @@ curl --location --request POST 'http://localhost:8080/space/obstacle' \
 
 ### Delete an obstacle
 
-Values:
+Delete obstacle at specified position.
 
-- x
-- y
+Body:
+
+- x: Integer
+- y: Integer
 
 ```
-curl --location --request DELETE 'http://localhost:8080/space/obstacle' \
+curl --location --request DELETE 'http://localhost:8080/planet/obstacle' \
 --header 'Content-Type: application/json' \
 --data-raw '{
     "x": 0,
@@ -104,10 +112,15 @@ curl --location --request DELETE 'http://localhost:8080/space/obstacle' \
 
 ### Update rover
 
-Values:
+Update rover position and direction.
 
-- position : { x, y }
-- direction: [ N, E, S, W ]
+Body:
+
+- position :
+    - x: Integer
+    - y: Integer
+- direction: String
+  ( possible values: [ N, E, S, W ] )
 
 ```
 curl --location --request PUT 'http://localhost:8080/rover' \
@@ -122,6 +135,10 @@ curl --location --request PUT 'http://localhost:8080/rover' \
 ```
 
 ### Move rover
+
+Move rover using a list of commands.
+
+Body: [String]
 
 Possible values: [ F, B, R, L ]
 

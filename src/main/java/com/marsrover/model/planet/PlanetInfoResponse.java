@@ -1,4 +1,4 @@
-package com.marsrover.model.space;
+package com.marsrover.model.planet;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.marsrover.model.obstacle.Obstacle;
@@ -7,7 +7,7 @@ import com.marsrover.model.rover.Rover;
 import java.util.List;
 
 
-public class SpaceInfoResponse {
+public class PlanetInfoResponse {
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String message;
@@ -16,19 +16,19 @@ public class SpaceInfoResponse {
     private List<Obstacle> obstacles;
     private Rover rover;
 
-    public SpaceInfoResponse(Space space) {
-        this.width = space.getWidth();
-        this.height = space.getHeight();
-        this.obstacles = space.getObstacles();
-        this.rover = space.getRover();
+    public PlanetInfoResponse(Planet planet) {
+        this.width = planet.getWidth();
+        this.height = planet.getHeight();
+        this.obstacles = planet.getObstacles();
+        this.rover = planet.getRover();
     }
 
-    public SpaceInfoResponse(String message, Space space) {
+    public PlanetInfoResponse(String message, Planet planet) {
         this.message = message;
-        this.width = space.getWidth();
-        this.height = space.getHeight();
-        this.obstacles = space.getObstacles();
-        this.rover = space.getRover();
+        this.width = planet.getWidth();
+        this.height = planet.getHeight();
+        this.obstacles = planet.getObstacles();
+        this.rover = planet.getRover();
     }
 
     public String getMessage() {
