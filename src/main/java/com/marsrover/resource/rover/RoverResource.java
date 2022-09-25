@@ -1,9 +1,9 @@
 package com.marsrover.resource.rover;
 
-import com.marsrover.model.response.SpaceInfoResponse;
+import com.marsrover.model.obstacle.Obstacle;
 import com.marsrover.model.rover.RoverDto;
-import com.marsrover.model.space.Obstacle;
 import com.marsrover.model.space.Space;
+import com.marsrover.model.space.SpaceInfoResponse;
 import com.marsrover.service.rover.RoverService;
 
 import javax.inject.Inject;

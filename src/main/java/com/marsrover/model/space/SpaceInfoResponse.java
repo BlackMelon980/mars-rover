@@ -1,9 +1,8 @@
-package com.marsrover.model.response;
+package com.marsrover.model.space;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.marsrover.model.obstacle.Obstacle;
 import com.marsrover.model.rover.Rover;
-import com.marsrover.model.space.Obstacle;
-import com.marsrover.model.space.Space;
 
 import java.util.List;
 

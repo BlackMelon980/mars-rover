@@ -1,10 +1,10 @@
 package com.marsrover.service.rover;
 
 import com.marsrover.model.enums.DirectionEnum;
-import com.marsrover.model.rover.Position;
+import com.marsrover.model.obstacle.Obstacle;
+import com.marsrover.model.position.Position;
 import com.marsrover.model.rover.Rover;
 import com.marsrover.model.rover.RoverDto;
-import com.marsrover.model.space.Obstacle;
 import com.marsrover.model.space.Space;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -21,6 +21,11 @@ public class RoverService {
 
     public Boolean updateRover(RoverDto roverDto, Space space) {
 
+        Boolean isOutOfBounds = space.checkPositionOutOfBounds(roverDto.getPosition());
+        if (isOutOfBounds) {
+            return false;
+        }
+
         if (space.getObstacleByPosition(roverDto.getPosition()) != null) {
             return false;
         }
@@ -28,7 +33,7 @@ public class RoverService {
         Rover rover = space.getRover();
         rover.setPosition(roverDto.getPosition());
         rover.setDirection(roverDto.getDirection());
-        
+
         return true;
     }
 

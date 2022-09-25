@@ -1,8 +1,9 @@
 package com.marsrover.resource.space;
 
-import com.marsrover.model.response.SpaceInfoResponse;
+import com.marsrover.model.position.Position;
 import com.marsrover.model.space.Space;
 import com.marsrover.model.space.SpaceDto;
+import com.marsrover.model.space.SpaceInfoResponse;
 import com.marsrover.service.space.SpaceService;
 
 import javax.inject.Inject;
@@ -42,6 +43,40 @@ public class SpaceResource {
 
         System.out.println(space.getSpaceView());
         SpaceInfoResponse response = new SpaceInfoResponse(space);
+        return Response.ok(response).build();
+
+    }
+
+    @POST
+    @Path("/obstacle")
+    public Response createObstacle(Position position) {
+
+        Boolean obstacleWasAdded = spaceService.addObstacle(space, position);
+
+        if (!obstacleWasAdded) {
+            return Response.status(Response.Status.BAD_REQUEST.getStatusCode()).entity("Create obstacle error: position is not available.").build();
+        }
+
+        System.out.println(space.getSpaceView());
+        SpaceInfoResponse response = new SpaceInfoResponse(space);
+
+        return Response.ok(response).build();
+
+    }
+
+    @DELETE
+    @Path("/obstacle")
+    public Response deleteObstacle(Position position) {
+
+        Boolean obstacleWasDeleted = spaceService.deleteObstacle(space, position);
+
+        if (!obstacleWasDeleted) {
+            return Response.status(Response.Status.BAD_REQUEST.getStatusCode()).entity("Delete obstacle error: obstacle does not exist.").build();
+        }
+
+        System.out.println(space.getSpaceView());
+        SpaceInfoResponse response = new SpaceInfoResponse(space);
+
         return Response.ok(response).build();
 
     }

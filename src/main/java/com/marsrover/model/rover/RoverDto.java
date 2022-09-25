@@ -1,6 +1,7 @@
 package com.marsrover.model.rover;
 
 import com.marsrover.model.enums.DirectionEnum;
+import com.marsrover.model.position.Position;
 
 public class RoverDto {
 

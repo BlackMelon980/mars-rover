@@ -1,4 +1,4 @@
-package com.marsrover.model.rover;
+package com.marsrover.model.position;
 
 public class Position {
 

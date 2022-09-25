@@ -1,6 +1,6 @@
-package com.marsrover.model.space;
+package com.marsrover.model.obstacle;
 
-import com.marsrover.model.rover.Position;
+import com.marsrover.model.position.Position;
 
 
 public class Obstacle {

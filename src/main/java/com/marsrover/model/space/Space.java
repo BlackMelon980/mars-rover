@@ -1,7 +1,8 @@
 package com.marsrover.model.space;
 
 import com.marsrover.model.enums.DirectionEnum;
-import com.marsrover.model.rover.Position;
+import com.marsrover.model.obstacle.Obstacle;
+import com.marsrover.model.position.Position;
 import com.marsrover.model.rover.Rover;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -27,6 +28,12 @@ public class Space {
         Predicate<Obstacle> byPosition = obstacle -> obstacle.getPosition().equals(position);
         List<Obstacle> obstacleList = obstacles.stream().filter(byPosition).collect(Collectors.toList());
         return obstacleList.isEmpty() ? null : obstacleList.get(0);
+
+    }
+
+    public Boolean checkPositionOutOfBounds(Position position) {
+
+        return position.getX() < 0 || position.getX() >= width || position.getY() < 0 || position.getY() >= height;
 
     }
 
@@ -103,6 +110,21 @@ public class Space {
 
     }
 
+    public void addObstacleAtPosition(Position position) {
+
+        obstacles.add(new Obstacle(position));
+
+    }
+
+    public void deleteObstacle(Position position) {
+
+        Obstacle obstacle = getObstacleByPosition(position);
+        if (obstacle != null) {
+            obstacles.remove(obstacle);
+        }
+
+    }
+
 
     public Integer getWidth() {
         return width;
@@ -135,4 +157,5 @@ public class Space {
     public void setRover(Rover rover) {
         this.rover = rover;
     }
+
 }

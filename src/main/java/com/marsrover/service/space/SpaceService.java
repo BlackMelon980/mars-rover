@@ -1,7 +1,8 @@
 package com.marsrover.service.space;
 
-import com.marsrover.model.rover.Position;
-import com.marsrover.model.space.Obstacle;
+import com.marsrover.model.obstacle.Obstacle;
+import com.marsrover.model.position.Position;
+import com.marsrover.model.rover.Rover;
 import com.marsrover.model.space.Space;
 import com.marsrover.model.space.SpaceDto;
 import com.marsrover.utils.NumberUtils;
@@ -33,6 +34,34 @@ public class SpaceService {
                 obstacleIndex--;
             }
         }
+
     }
 
+    public Boolean addObstacle(Space space, Position position) {
+
+        Boolean isOutOfBounds = space.checkPositionOutOfBounds(position);
+        if (isOutOfBounds) {
+            return false;
+        }
+        Obstacle obstacle = space.getObstacleByPosition(position);
+        Rover rover = space.getRover();
+        if (obstacle != null || position.equals(rover.getPosition())) {
+            return false;
+        }
+        space.addObstacleAtPosition(position);
+        return true;
+
+    }
+
+    public Boolean deleteObstacle(Space space, Position position) {
+
+        Obstacle obstacle = space.getObstacleByPosition(position);
+        if (obstacle == null) {
+            return false;
+        }
+
+        space.deleteObstacle(position);
+        return true;
+
+    }
 }

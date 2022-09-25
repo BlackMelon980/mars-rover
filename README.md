@@ -44,7 +44,7 @@ mvn test
 
 ## Space
 
-### Initialize the space
+### Initialize
 
 Values:
 
@@ -66,6 +66,38 @@ curl --location --request POST 'http://localhost:8080/space/init' \
 
 ```
 curl --location --request GET 'http://localhost:8080/space'
+```
+
+### Add a new obstacle
+
+Values:
+
+- x
+- y
+
+```
+curl --location --request POST 'http://localhost:8080/space/obstacle' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "x": 1,
+    "y": 2
+}'
+```
+
+### Delete an obstacle
+
+Values:
+
+- x
+- y
+
+```
+curl --location --request DELETE 'http://localhost:8080/space/obstacle' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "x": 0,
+    "y": 2
+}'
 ```
 
 ## Rover

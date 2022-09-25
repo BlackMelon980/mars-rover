@@ -1,6 +1,7 @@
 package com.marsrover.model.space;
 
-import com.marsrover.model.rover.Position;
+import com.marsrover.model.obstacle.Obstacle;
+import com.marsrover.model.position.Position;
 import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

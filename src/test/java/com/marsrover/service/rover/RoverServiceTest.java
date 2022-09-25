@@ -1,9 +1,10 @@
 package com.marsrover.service.rover;
 
 import com.marsrover.model.enums.DirectionEnum;
-import com.marsrover.model.rover.Position;
+import com.marsrover.model.obstacle.Obstacle;
+import com.marsrover.model.position.Position;
+import com.marsrover.model.rover.Rover;
 import com.marsrover.model.rover.RoverDto;
-import com.marsrover.model.space.Obstacle;
 import com.marsrover.model.space.Space;
 import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.BeforeEach;
@@ -46,6 +47,23 @@ public class RoverServiceTest {
 
         assertTrue(roverService.updateRover(roverDto, space));
 
+        Rover rover = space.getRover();
+        assertEquals(new Position(1, 1), rover.getPosition());
+        assertEquals(DirectionEnum.N, rover.getDirection());
+    }
+
+    @Test
+    void cannotSetRoverPositionOutOfBounds() {
+
+        RoverDto roverDto = new RoverDto();
+        roverDto.setPosition(new Position(10, 10));
+        roverDto.setDirection(DirectionEnum.N);
+
+        assertFalse(roverService.updateRover(roverDto, space));
+
+        Rover rover = space.getRover();
+        assertEquals(new Position(0, 0), rover.getPosition());
+        assertEquals(DirectionEnum.N, rover.getDirection());
     }
 
     @Test
@@ -64,16 +82,33 @@ public class RoverServiceTest {
 
         List<String> commands = new ArrayList<>(List.of("L", "L", "F"));
 
-        assertNull(roverService.moveRover(space, commands));
+        roverService.moveRover(space, commands);
+        Rover rover = space.getRover();
 
+        assertEquals(new Position(0, 1), rover.getPosition());
+        assertEquals(DirectionEnum.S, rover.getDirection());
     }
 
     @Test
     void moveRoverButIsInterruptedByObstacle() {
 
         List<String> commands = new ArrayList<>(List.of("R", "F"));
+        Rover rover = space.getRover();
 
         assertNotNull(roverService.moveRover(space, commands));
-
+        assertEquals(new Position(0, 0), rover.getPosition());
     }
+
+    @Test
+    void roverCannotMoveWithWrongCommands() {
+
+        List<String> commands = new ArrayList<>(List.of("FR", "LB", "1"));
+
+        roverService.moveRover(space, commands);
+        Rover rover = space.getRover();
+
+        assertEquals(new Position(0, 0), rover.getPosition());
+        assertEquals(DirectionEnum.N, rover.getDirection());
+    }
+
 }
